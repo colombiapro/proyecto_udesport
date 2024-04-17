@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% block content %}
+  <main class="px-3">
+    {% if request.user.is_authenticated and user.tipo == 'A' %}
+    <section class="py-5 text-center">
+      <div class="container">
+        <div class="row py-lg-5">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <h1 class="fw-light mb-4">Gestor de Eventos</h1>
+            <form action="{% url 'create_event' %}" method="POST" class="row g-3 justify-content-center">
+              {% csrf_token %}
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="nombre_ev" placeholder="Nombre del Evento" required>
+              </div>
+              <div class="col-md-6">
+                <input type="date" class="form-control" name="fecha" required>
+              </div>
+              <div class="col-md-6">
+                <input type="text" class="form-control" name="lugar" placeholder="Lugar" required>
+              </div>
+              <div class="col-md-6">
+                <textarea class="form-control" name="descripcion" rows="3" placeholder="Descripción del Evento" required></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">Crear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for evento in eventos %}
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title text-dark">{{ evento.nombre_ev }}</h3>
+            <p class="card-text text-dark">{{ evento.fecha }}</p>
+            <p class="card-text text-dark">{{ evento.lugar }}</p>
+            <p class="card-text text-dark">{{ evento.descripcion }}</p>
+              {% if request.user.is_authenticated and user.tipo == 'A' %}
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              
+              <a href="{% url 'edit_event' evento.id %}" class="btn btn-primary">Editar</a>
+              <form action="{% url 'delete_event' evento.id %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-danger">Borrar</button>
+              </form>
+            </div>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+ </main>
+
+
+
+{% endblock %}

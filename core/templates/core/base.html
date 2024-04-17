@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es" class="h-100">
+
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.104.2">
+  <title>Udesports</title>
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/cover/">
+  <link href={% static 'core/css/bootstrap.min.css' %} rel="stylesheet">
+  <link href={% static 'core/css/custom.css' %} rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href={% static 'core/css/cover.css' %} rel="stylesheet">
+</head>
+
+<body class="d-flex h-100 text-center text-bg-dark">
+<div class="cover-container d-flex w-100 p-4 mx-auto flex-column">
+  <header class="mb-auto">
+    <div>
+      
+      <h3 class="float-md-start mb-0">Universidad de Nariño</h3>
+      <nav class="nav nav-masthead justify-content-center float-md-end">
+        
+        <a class="nav-link fw-bold py-1 px-0 " aria-current="page" href={% url 'home' %}>Inicio</a>
+        <a class="nav-link fw-bold py-1 px-0" href={% url 'eventos' %}>Eventos</a>
+        <!--<a class="nav-link fw-bold py-1 px-0" href={% url 'eventos' %}>Campeonatos</a>-->
+        <a class="nav-link fw-bold py-1 px-0" href={% url 'rendimiento' %}>Rendimiento</a>
+        
+
+
+        {% if request.user.is_authenticated  %} <!--Para saber si el usuario esta logueado--> 
+          <a class="nav-link fw-bold py-1 px-0" href={% url 'inscripcion' %} class="nav-link fw-bold py-1 px-0">Inscripcion</a>
+          <a class="nav-link fw-bold py-1 px-0" href={% url 'exit' %}>Salir</a>
+        {% else %}
+          <a class="nav-link fw-bold py-1 px-0" href={% url 'login' %}>Ingresar</a>
+        {% endif %}
+        <a class="nav-link fw-bold py-1 px-0" href={% url 'home' %}>{% if request.user.is_authenticated  %} Codigo: {{user.codigo | upper }},{% if user.tipo == 'E' %} Estudiante {% endif %} {% if user.tipo == 'A' %} Administrador {% endif %} {% if user.tipo == 'C' %} Coach {% endif %} {% if user.tipo == 'F' %} Funcionario {% endif %}    {% endif %}</a>
+      </nav>
+     
+    </div>
+  </header>
+  
+  {% block content %}{% endblock %}
+
+  {% if validacion %}
+    <a class="btn btn-outline-light" href={% url 'exit' %}>Cerrar Sesión</a>
+  {% endif %}
+
+  <footer class="mt-auto text-white-50">
+    <p>Gestion de campeonatos y más</p>
+  </footer>
+</div>
+  </body>
+</html>
